@@ -43,7 +43,7 @@ Returns a floating point number calculated by the backend.
 ## License
 
 - [MIT](https://choosealicense.com/licenses/mit/)
-- [Robinhood Financial LLC & Robinhood Securities, LLC  Customer Agreement](https://cdn.robinhood.com/assets/robinhood/legal/Robinhood%20Customer%20Agreement.pdfhttps://cdn.robinhood.com/assets/robinhood/legal/Robinhood%20Customer%20Agreement.pdf)
+- [Robinhood Financial LLC & Robinhood Securities, LLC  Customer Agreement](https://cdn.robinhood.com/assets/robinhood/legal/Robinhood%20Customer%20Agreement.pdf)
 
 ## Authors
 
