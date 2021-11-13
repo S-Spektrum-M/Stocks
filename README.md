@@ -13,7 +13,7 @@ Share Trading on Computer Knowlede Systems
 
 #### Short Term Predict
 
-```http
+```
   GET /api/short/items${ticker}
 ```
 
@@ -25,7 +25,7 @@ Returns a floating point number calculated by the backend.
 
 #### Long Term Predict
 
-```http
+```
   GET /api/long/items${ticker}
 ```
 
