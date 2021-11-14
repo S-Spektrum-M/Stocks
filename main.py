@@ -8,5 +8,11 @@ f = open('stocks.json')
 stocks = json.load(f)
 
 for stock in stocks:
-    print(rh.stocks.get_latest_price(stock["Symbol"])[0])
-    rh.stocks.get_stock_historicals
+    try:
+        prices = rh.stocks.get_stock_historicals(stock["Symbol"])
+        for price in prices:
+            print(f'{stock["Symbol"]}: open: {price["open_price"]} close: {price["close_price"]}')
+    except TypeError:
+        print("Bad Entry")
+
+f.close()
