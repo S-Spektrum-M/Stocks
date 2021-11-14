@@ -8,37 +8,46 @@ Share Trading on Computer Knowlede Systems
     - short term requires 1mo of historical data.
 - While github does not support rendering LaTeX The following is a LaTeX representation of
     regression:
-    - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y}$$
+    - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y} + 2\sigma_y\beta$$
+    - $\hat{y}$: expected value
+    - $r$: coefficent of correlation
+    - $\sigma_x$: Standard Deviation of $x$
+    - $\sigma_y$: Standard Deviation of $y$
+    - $x$: $x$
+    - $\overline{y}$: Mean value of $y$
+    - $\beta$: Beta(Volatility)
 
 ## API Reference
 
 #### Short Term Predict
 
 ```
-  GET /api/short/items${ticker}
+  GET /api/long/?id={ticker}
 ```
 
 | Parameter | Type     | Description                        |
 |-----------|----------|------------------------------------|
 | `ticker`  | `string` | **Required**. The Stock to query   |
 
-Returns a floating point number calculated by the backend.
+Returns a list floating point number that represents the upper bound and lower bound for the short term.
 
 #### Long Term Predict
 
 ```
-  GET /api/long/items${ticker}
+  GET /api/long/?id={ticker}
 ```
 
 | Parameter | Type     | Description                        |
 |-----------|----------|------------------------------------|
 | `ticker`  | `string` | **Required**. The Stock to query   |
 
-Returns a floating point number calculated by the backend.
+Returns a list floating point number that represents the upper bound and lower bound for the long term.
 
 ## Acknowledgements
 
 - [robin-stocks](https://github.com/jmfernandes/robin_stocks)
+- [numpy](https://github.com/jmfernandes/robin_stocks)
+- [flask](https://github.com/jmfernandes/robin_stocks)
 - [Robinhood](https://robinhood.com/)
 
 ## License
