@@ -7,7 +7,8 @@ Share Trading on Computer Knowlede Systems
     - Long term requires 1yr of historical data.
     - short term requires 1mo of historical data.
 - While github does not support rendering LaTeX The following is a LaTeX representation of
-    regression: $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y}$$
+    regression:
+    - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y}$$
 
 ## API Reference
 
@@ -18,7 +19,7 @@ Share Trading on Computer Knowlede Systems
 ```
 
 | Parameter | Type     | Description                        |
-| :-------- | :------- | :-------------------------------   |
+|-----------|----------|------------------------------------|
 | `ticker`  | `string` | **Required**. The Stock to query   |
 
 Returns a floating point number calculated by the backend.
@@ -29,9 +30,9 @@ Returns a floating point number calculated by the backend.
   GET /api/long/items${ticker}
 ```
 
-| Parameter | Type      | Description                        |
-| --------  | -------   | -------------------------------    |
-| `ticker`  | `string`  | **Required**. The Stock to query   |
+| Parameter | Type     | Description                        |
+|-----------|----------|------------------------------------|
+| `ticker`  | `string` | **Required**. The Stock to query   |
 
 Returns a floating point number calculated by the backend.
 
