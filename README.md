@@ -1,6 +1,17 @@
 # S.T.O.C.K.S.
 Share Trading on Computer Knowlede Systems
 
+## Installation
+
+Install STOCKS
+```bash
+    pip3 install robin-stocks
+    pip3 install numpy
+    pip3 install flask 
+    git clone https://github.com/S-Spektrum-M/Stocks
+    cd Stocks
+```
+
 ## How it works
 - STOCKS parses historical data to create a linear model using regression.
 - The API provides two kinds of forecasts a long term(~ 6mo) and a short term(~ 2wks)
