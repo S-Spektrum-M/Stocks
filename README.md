@@ -5,10 +5,10 @@ Share Trading on Computer Knowlede Systems
 
 Install STOCKS
 ```bash
-    pip3 install robin-stocks
-    pip3 install numpy
-    pip3 install flask 
-    git clone https://github.com/S-Spektrum-M/Stocks
+    pip3 install robin-stocks \
+    pip3 install numpy \
+    pip3 install flask \
+    git clone https://github.com/S-Spektrum-M/Stocks \
     cd Stocks
 ```
 
