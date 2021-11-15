@@ -10,6 +10,7 @@ Install STOCKS
     pip3 install flask \
     git clone https://github.com/S-Spektrum-M/Stocks \
     cd Stocks
+    touch auth.py
 ```
 
 ## How it works
@@ -19,7 +20,7 @@ Install STOCKS
     - short term requires 1mo of historical data.
 - While github does not support rendering LaTeX The following is a LaTeX representation of
     regression:
-    - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y} + 2\sigma_y\beta$$
+    - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y} \pm \sigma_y$$
     - $\hat{y}$: expected value
     - $r$: coefficent of correlation
     - $\sigma_x$: Standard Deviation of $x$
