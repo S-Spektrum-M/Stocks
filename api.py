@@ -1,4 +1,4 @@
-mport json
+import json
 import numpy as np
 import stats as st
 from robin_stocks import robinhood as rh
@@ -16,7 +16,10 @@ def short():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        return jsonify(st.short_linear_reg(id))
+        return jsonify({
+            'upper': st.short_linear_reg(id)[0],
+            'lower': st.short_linear_reg(id)[1]
+        })
     else:
         return "Error: No id field provided. Please specify an id."
 
@@ -27,7 +30,10 @@ def long():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        return jsonify(st.long_linear_reg(id))
+        return jsonify({
+            'upper': st.long_linear_reg(id)[0],
+            'lower': st.long_linear_reg(id)[1]
+        })
     else:
         return "Error: No id field provided. Please specify an id."
 
