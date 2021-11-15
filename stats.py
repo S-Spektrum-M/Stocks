@@ -5,13 +5,6 @@ import auth
 
 rh.authentication.login(auth.USERNAME, auth.PASSWORD)
 
-def beta(ticker):
-    """
-    param: string: ticker: string that represents ticker to query
-    return: float: beta of stock relative to sector
-    """
-    return 1
-
 def short_linear_reg(ticker):
     """
     param: ticker: string that represents ticker to query
@@ -33,7 +26,7 @@ def short_linear_reg(ticker):
     s_x = np.std(x)
     s_y = np.std(y)
     slope = r * s_y / s_x
-    return [slope * (i+1 - np.mean(x)) + np.mean(y) + (2 * s_y * beta(ticker)), slope * (i+1 - np.mean(x)) + np.mean(y) - (2 * s_y * beta(ticker))]
+    return [slope * (i+1 - np.mean(x)) + np.mean(y) + (s_y), slope * (i+1 - np.mean(x)) + np.mean(y) - (s_y)]
 
 def long_linear_reg(ticker):
     """
@@ -56,4 +49,4 @@ def long_linear_reg(ticker):
     s_x = np.std(x)
     s_y = np.std(y)
     slope = r * s_y / s_x
-    return [slope * (i+1 - np.mean(x)) + np.mean(y) + (2 * s_y * beta(ticker)), slope * (i+1 - np.mean(x)) + np.mean(y) - (2 * s_y * beta(ticker))]
+    return [slope * (i+1 - np.mean(x)) + np.mean(y) + (s_y), slope * (i+1 - np.mean(x)) + np.mean(y) - (s_y)]
