@@ -17,7 +17,7 @@ def short():
     if 'id' in request.args:
         id = str(request.args['id'])
         response = st.short_linear_reg(id)
-        if (len(response)) == 3:
+        if response == None:
             return jsonify('bad request')
         else:
             return jsonify({
@@ -35,7 +35,7 @@ def long():
     if 'id' in request.args:
         id = str(request.args['id'])
         response  = st.long_linear_reg(id)
-        if (len(response)) == 3:
+        if response == None:
             return jsonify('bad request')
         else:
             return jsonify({

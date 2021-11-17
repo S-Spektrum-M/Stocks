@@ -18,7 +18,7 @@ def short_linear_reg(ticker):
     try:
         prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
     except TypeError:
-        return [0,0].append("bad_request")
+        return None
 
     y_tmp = list()
     i = 0
@@ -54,7 +54,7 @@ def long_linear_reg(ticker):
     try:
         prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
     except TypeError:
-        return [0,0].append("bad_request")
+        return None
 
     y_tmp = list()
     i = 0
