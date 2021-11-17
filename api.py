@@ -16,10 +16,14 @@ def short():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        return jsonify({
-            'upper': st.short_linear_reg(id)[0],
-            'lower': st.short_linear_reg(id)[1]
-        })
+        a = st.short_linear_reg(id)
+        if (len(a)) == 3:
+            return jsonify('bad request')
+        else:
+            return jsonify({
+                'upper': response[0],
+                'lower': response[1]
+            })
     else:
         return "Error: No id field provided. Please specify an id."
 
@@ -30,10 +34,14 @@ def long():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        return jsonify({
-            'upper': st.long_linear_reg(id)[0],
-            'lower': st.long_linear_reg(id)[1]
-        })
+        response  = st.long_linear_reg(id)
+        if (len(response)) == 3:
+            return jsonify('bad request')
+        else:
+            return jsonify({
+                'upper': response[0],
+                'lower': response[1]
+            })
     else:
         return "Error: No id field provided. Please specify an id."
 
