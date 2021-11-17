@@ -16,8 +16,8 @@ def short():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        a = st.short_linear_reg(id)
-        if (len(a)) == 3:
+        response = st.short_linear_reg(id)
+        if (len(response)) == 3:
             return jsonify('bad request')
         else:
             return jsonify({
