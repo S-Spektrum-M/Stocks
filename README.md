@@ -1,9 +1,8 @@
 # S.T.O.C.K.S.
-Share Trading on Computer Knowlede Systems
 
 ## Installation
 
-Install STOCKS
+Install S.T.O.C.K.S
 ```bash
     pip3 install robin-stocks \
     pip3 install numpy \
@@ -14,10 +13,8 @@ Install STOCKS
 ```
 
 ## How it works
-- STOCKS parses historical data to create a linear model using regression.
+- S.T.O.C.K.S parses historical data to create a linear model using regression.
 - The API provides two kinds of forecasts a long term(~ 6mo) and a short term(~ 2wks)
-    - Long term requires 1yr of historical data.
-    - short term requires 1mo of historical data.
 - While github does not support rendering LaTeX The following is a LaTeX representation of
     regression:
     - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y} \pm \sigma_y$$
@@ -27,31 +24,31 @@ Install STOCKS
     - $\sigma_y$: Standard Deviation of $y$
     - $x$: $x$
     - $\overline{y}$: Mean value of $y$
-    - $\beta$: Beta(Volatility)
+- If the query has already been served within the last minute then it is stored to a redis db to increase
+  speed and decrease compute time
 
 ## API Reference
 
 #### Short Term Predict
+|   Endpoint   |    Parameter   | Return |        Description       |
+|--------------|----------------|--------|--------------------------|
+|``/api/short``|``?id={ticker}``|Below   |The short term calculation|
+|``/api/long`` |``?id={ticker}``|Below   |The long term calculation |
 
+- Short Return Type
+```json
+{
+  "lower": 2944.7089259649783,
+  "upper": 3065.440437798343
+}
 ```
-  GET /api/long/?id={ticker}
+- Long Return Type
+```json
+{
+  "lower": 2944.7089259649783,
+  "upper": 3065.440437798343
+}
 ```
-
-| Parameter | Type     | Description                        |
-|-----------|----------|------------------------------------|
-| `ticker`  | `string` | **Required**. The Stock to query   |
-
-Returns a list floating point number that represents the upper bound and lower bound for the short term.
-
-#### Long Term Predict
-
-```
-  GET /api/long/?id={ticker}
-```
-
-| Parameter | Type     | Description                        |
-|-----------|----------|------------------------------------|
-| `ticker`  | `string` | **Required**. The Stock to query   |
 
 Returns a list floating point number that represents the upper bound and lower bound for the long term.
 
