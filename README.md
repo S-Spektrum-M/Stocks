@@ -4,13 +4,18 @@
 
 Install S.T.O.C.K.S
 ```bash
-    pip3 install robin-stocks \
-    pip3 install numpy \
-    pip3 install flask \
-    git clone https://github.com/S-Spektrum-M/Stocks \
+    pip3 install robin-stocks
+    pip3 install numpy
+    pip3 install flask
+    git clone https://github.com/S-Spektrum-M/Stocks
     cd Stocks
     touch auth.py
+    sudo add-apt-repository ppa:redislabs/redis
+    sudo apt-get update
+    sudo apt-get install redis
+    pip install redis
 ```
+- Add your robinhood email and password to ``auth.py``
 
 ## How it works
 - S.T.O.C.K.S parses historical data to create a linear model using regression.
@@ -50,14 +55,14 @@ Install S.T.O.C.K.S
 }
 ```
 
-Returns a list floating point number that represents the upper bound and lower bound for the long term.
-
 ## Acknowledgements
 
 - [robin-stocks](https://github.com/jmfernandes/robin_stocks)
 - [numpy](https://github.com/jmfernandes/robin_stocks)
 - [flask](https://github.com/jmfernandes/robin_stocks)
 - [Robinhood](https://robinhood.com/)
+- [Redis](https://redis.io/)
+- [Redis-py](https://github.com/redis/redis-py)
 
 ## License
 
