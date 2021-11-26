@@ -18,17 +18,9 @@ Install S.T.O.C.K.S
 - Add your robinhood email and password to ``auth.py``
 
 ## How it works
-- S.T.O.C.K.S parses historical data to create a linear model using regression.
-- The API provides two kinds of forecasts a long term(~ 6mo) and a short term(~ 2wks)
-- While github does not support rendering LaTeX The following is a LaTeX representation of
-    regression:
-    - $$\Large \hat{y} = r\frac{\sigma_y}{\sigma_x}(x - \overline{x}) + \overline{y} \pm \sigma_y$$
-    - $\hat{y}$: expected value
-    - $r$: coefficent of correlation
-    - $\sigma_x$: Standard Deviation of $x$
-    - $\sigma_y$: Standard Deviation of $y$
-    - $x$: $x$
-    - $\overline{y}$: Mean value of $y$
+- S.T.O.C.K.S parses historical data to create two types of models
+    - Short term: Linear
+    - Long term: Exponential
 - If the query has already been served within the last minute then it is stored to a redis db to increase
   speed and decrease compute time
 
