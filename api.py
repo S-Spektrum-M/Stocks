@@ -1,8 +1,4 @@
-import json
-import numpy as np
 import stats as st
-from robin_stocks import robinhood as rh
-import auth
 import flask
 from flask import request, jsonify
 
@@ -18,12 +14,12 @@ def short():
         id = str(request.args['id'])
         response = st.short_linear_reg(id)
         if response == None:
-            return jsonify('bad request')
+            return jsonify(f'bad request: {id}'), 404
         else:
             return jsonify({
                 'upper': response[0],
                 'lower': response[1]
-            })
+            }), 200
     else:
         return "Error: No id field provided. Please specify an id."
 
@@ -41,7 +37,7 @@ def long():
             return jsonify({
                 'upper': response[0],
                 'lower': response[1]
-            })
+            }), 200
     else:
         return "Error: No id field provided. Please specify an id."
 
