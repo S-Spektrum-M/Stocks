@@ -25,8 +25,6 @@ Install S.T.O.C.K.S
   speed and decrease compute time
 
 ## API Reference
-
-#### Short Term Predict
 |   Endpoint   |    Parameter   | Return |        Description       |
 |--------------|----------------|--------|--------------------------|
 |``/api/short``|``?id={ticker}``|Below   |The short term calculation|
