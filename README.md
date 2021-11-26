@@ -61,4 +61,4 @@ Install S.T.O.C.K.S
 
 ## Authors
 
-- [Siddharth Mohanty](https://www.linkedin.com/in/siddharth-mohanty-6a2b77211/)
+- [Siddharth Mohanty](https://s-spektrum-m.github.io/Resume/)
