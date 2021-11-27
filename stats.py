@@ -2,23 +2,22 @@ import numpy as np
 from robin_stocks import robinhood as rh
 import auth
 import redis
-from datetime import datetime
+from datetime import datetime, date
 
 rh.authentication.login(auth.USERNAME, auth.PASSWORD)
 client = redis.Redis(host='localhost', port=6379, db=0)
 now = datetime.now()
 
 def short(ticker):
-    query = (f'short-{ticker}-{datetime.now().strftime("%H:%M")}')
+    query = (f'short-{ticker}-{datetime.now().strftime("%H")}')
     if client.get(query) != None:
-        print(f'loaded {ticker} from db')
         print(query)
         return [
             float(client.get(f'{query}.upper').decode('utf-8')),
             float(client.get(f'{query}.lower').decode('utf-8'))
         ]
     else:
-        prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
+        prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
         if prices[0] == None:
             return None
         else:
@@ -43,26 +42,23 @@ def short(ticker):
             client.set(query, "true")
             client.set(f'{query}.upper',b[0])
             client.set(f'{query}.lower',b[1])
-            print(f'Added {ticker} to db')
             return b
 
 def long(ticker):
-    query = (f'long-{ticker}-{datetime.now().strftime("%H:%M")}')
+    query = (f'long-{ticker}-{datetime.now().strftime("%d/%m/%Y")}')
     if client.get(query) != None:
-        print(f'loaded {ticker} from db')
         print(query)
         return [
             float(client.get(f'{query}.upper').decode('utf-8')),
             float(client.get(f'{query}.lower').decode('utf-8'))
         ]
     else:
-        prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
-
+        prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
         if prices[0] == None:
             return None
         else:
             y_tmp = list()
-            i = 0
+            i = -1
             for price in prices:
                 y_tmp.append(float(price["open_price"]))
                 y_tmp.append(float(price["close_price"]))
@@ -76,5 +72,4 @@ def long(ticker):
             client.set(query, "true")
             client.set(f'{query}.upper',b[0])
             client.set(f'{query}.lower',b[1])
-            print(f'Added {ticker} to db')
             return b
