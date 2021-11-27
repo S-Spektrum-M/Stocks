@@ -37,12 +37,17 @@ def long():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        if id.isalpha() == None:
+        if id.isalpha():
             response = st.long(id)
-            return jsonify({
-                'upper': response[0],
-                'lower': response[1]
-            }), 200
+            if response != None:
+                return jsonify({
+                    'upper': response[0],
+                    'lower': response[1]
+                }), 200
+            else:
+                return jsonify({
+                    "error": "bad_id"
+                }), 404
         else:
             return jsonify({
                 "error": "bad_id"
