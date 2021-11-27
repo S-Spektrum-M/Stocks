@@ -24,7 +24,9 @@ def short():
                     "error": "bad_id"
                 }), 404
         else:
-            return jsonify(f'bad request: {id}'), 404
+            return jsonify({
+                "error": "bad_id"
+            }), 404
     else:
         return "Error: No id field provided. Please specify an id.", 404
 
@@ -42,7 +44,9 @@ def long():
                 'lower': response[1]
             }), 200
         else:
-            return jsonify(f'bad request: {id}'), 404
+            return jsonify({
+                "error": "bad_id"
+            }), 404
     else:
         return "Error: No id field provided. Please specify an id.", 404
 
