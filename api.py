@@ -12,16 +12,21 @@ def short():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        response = st.short_linear_reg(id)
-        if response == None:
-            return jsonify(f'bad request: {id}'), 404
+        if id.isalpha():
+            response = st.short(id)
+            if response != None:
+                return jsonify({
+                    'upper': response[0],
+                    'lower': response[1]
+                }), 200
+            else:
+                return jsonify({
+                    "error": "bad_id"
+                }), 404
         else:
-            return jsonify({
-                'upper': response[0],
-                'lower': response[1]
-            }), 200
+            return jsonify(f'bad request: {id}'), 404
     else:
-        return "Error: No id field provided. Please specify an id."
+        return "Error: No id field provided. Please specify an id.", 404
 
 @app.route('/api/long/', methods=['GET'])
 def long():
@@ -30,15 +35,15 @@ def long():
     # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
-        response  = st.long_linear_reg(id)
-        if response == None:
-            return jsonify('bad request')
-        else:
+        if id.isalpha() == None:
+            response = st.long(id)
             return jsonify({
                 'upper': response[0],
                 'lower': response[1]
             }), 200
+        else:
+            return jsonify(f'bad request: {id}'), 404
     else:
-        return "Error: No id field provided. Please specify an id."
+        return "Error: No id field provided. Please specify an id.", 404
 
 app.run(host="localhost", port=8080, debug=True)
