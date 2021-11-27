@@ -78,8 +78,3 @@ def long(ticker):
             client.set(f'{query}.lower',b[1])
             print(f'Added {ticker} to db')
             return b
-
-print(short('aapla'))
-print(long('aapla'))
-# prices = rh.stocks.get_stock_historicals('aapla', 'hour', 'month')
-# print(prices)
