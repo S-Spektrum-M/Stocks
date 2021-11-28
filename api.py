@@ -23,7 +23,7 @@ def short():
         else:
             return jsonify({
                 "error": "no_id"
-            }), 401
+            }), 400
     else:
         return "Error: No id field provided. Please specify an id.", 404
 
@@ -45,7 +45,7 @@ def long():
         else:
             return jsonify({
                 "error": "no_id"
-            }), 401
+            }), 400
     else:
         return "Error: No id field provided. Please specify an id.", 404
 
