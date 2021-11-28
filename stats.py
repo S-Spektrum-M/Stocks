@@ -24,7 +24,7 @@ def calc_short(y, i):
 
 @njit()
 def calc_long(y, i):
-    rate_of_change = y[i] ** (1/float(i))
+    rate_of_change = (y[i]/y[0]) ** (1/float(i))
     b = [
         round(y[i] * rate_of_change + np.std(y),2),
         round(y[i] * rate_of_change - np.std(y),2),
