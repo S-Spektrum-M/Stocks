@@ -9,7 +9,7 @@ client = redis.Redis(host='localhost', port=6379, db=0)
 now = datetime.now()
 
 def short(ticker):
-    query = (f'short-{ticker}-{datetime.now().strftime("%H")}')
+    query = (f'long-{ticker}-{datetime.now().strftime("%d/%m/%Y:%H")}')
     if client.get(query) != None:
         print(query)
         return [
