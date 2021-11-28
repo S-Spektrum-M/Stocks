@@ -24,12 +24,15 @@ def calc_short(y, i):
 
 @njit()
 def calc_long(y, i):
-    rate_of_change = (y[i]/y[0]) ** (1/float(i))
-    b = [
-        round(y[i] * rate_of_change + np.std(y),2),
-        round(y[i] * rate_of_change - np.std(y),2),
-    ]
-    return b
+    if y[0] != 0:
+        rate_of_change = (y[i]/y[0]) ** (1/float(i))
+        b = [
+            round(y[i] * rate_of_change + np.std(y),2),
+            round(y[i] * rate_of_change - np.std(y),2),
+        ]
+        return b
+    else:
+        return None
 
 def update_db(query, vals):
     client.set(query, "true")
@@ -80,5 +83,6 @@ def long(ticker):
                 y_tmp.append(float(price["close_price"]))
                 i = i + 2
             b = calc_long(np.asarray(y_tmp), i)
-            update_db(query, b)
+            if b != None:
+                update_db(query, b)
             return b
