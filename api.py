@@ -10,7 +10,7 @@ def short():
     if 'id' in request.args:
         id = str(request.args['id'])
         if id.isalpha():
-            response = st.short(id)
+            response = st.short(id.upper())
             if response != None:
                 return jsonify({
                     'upper': response[0],
@@ -22,8 +22,8 @@ def short():
                 }), 404
         else:
             return jsonify({
-                "error": "bad_id"
-            }), 404
+                "error": "no_id"
+            }), 401
     else:
         return "Error: No id field provided. Please specify an id.", 404
 
@@ -32,7 +32,7 @@ def long():
     if 'id' in request.args:
         id = str(request.args['id'])
         if id.isalpha():
-            response = st.long(id)
+            response = st.long(id.upper())
             if response != None:
                 return jsonify({
                     'upper': response[0],
@@ -44,8 +44,8 @@ def long():
                 }), 404
         else:
             return jsonify({
-                "error": "bad_id"
-            }), 404
+                "error": "no_id"
+            }), 401
     else:
         return "Error: No id field provided. Please specify an id.", 404
 
