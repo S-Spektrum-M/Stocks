@@ -7,9 +7,6 @@ app = flask.Flask(__name__)
 
 @app.route('/api/short/', methods=['GET'])
 def short():
-    # Check if an ID was provided as part of the URL.
-    # If ID is provided, assign it to a variable.
-    # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
         if id.isalpha():
@@ -32,9 +29,6 @@ def short():
 
 @app.route('/api/long/', methods=['GET'])
 def long():
-    # Check if an ID was provided as part of the URL.
-    # If ID is provided, assign it to a variable.
-    # If no ID is provided, display an error in the browser.
     if 'id' in request.args:
         id = str(request.args['id'])
         if id.isalpha():
