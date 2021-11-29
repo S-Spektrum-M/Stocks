@@ -24,8 +24,11 @@ def short():
             return jsonify({
                 "error": "no_id"
             }), 400
+
     else:
-        return "Error: No id field provided. Please specify an id.", 404
+        return jsonify({
+            "error": "no_id"
+        }), 400
 
 @app.route('/api/long/', methods=['GET'])
 def long():
@@ -47,6 +50,8 @@ def long():
                 "error": "no_id"
             }), 400
     else:
-        return "Error: No id field provided. Please specify an id.", 404
+        return jsonify({
+            "error": "no_id"
+        }), 400
 
 app.run(host="localhost", port=8080, debug=True)
