@@ -20,7 +20,9 @@ Install S.T.O.C.K.S
 ## How it works
 - S.T.O.C.K.S parses historical data to create two types of models
     - Short term: Linear
+        - Next trading hour 
     - Long term: Exponential
+        - Next trading day
 - If the query has already been served within the last minute then it is loaded from a redis db to increase
   speed and decrease compute time
 
