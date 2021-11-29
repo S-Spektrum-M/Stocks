@@ -35,15 +35,16 @@ Install S.T.O.C.K.S
 - Short Return Type
 ```json
 {
-  "lower": 2944.7089259649783,
-  "upper": 3065.440437798343
+  "lower": 2944.70,
+  "upper": 3065.44
 }
 ```
 - Long Return Type
 ```json
 {
-  "lower": 2944.7089259649783,
-  "upper": 3065.440437798343
+
+  "lower": 2944.70,
+  "upper": 3065.44
 }
 ```
 
