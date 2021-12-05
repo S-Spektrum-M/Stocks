@@ -9,6 +9,12 @@ rh.authentication.login(auth.USERNAME, auth.PASSWORD)
 client = redis.Redis(host='localhost', port=6379, db=0)
 now = datetime.now()
 
+
+def update_db(query, vals):
+    client.set(query, "true")
+    client.set(f'{query}.upper',vals[0])
+    client.set(f'{query}.lower',vals[1])
+
 @njit()
 def calc_short(y, i):
     x = np.arange(0, i)
@@ -33,11 +39,6 @@ def calc_long(y, i):
         return b
     else:
         return None
-
-def update_db(query, vals):
-    client.set(query, "true")
-    client.set(f'{query}.upper',vals[0])
-    client.set(f'{query}.lower',vals[1])
 
 def short(ticker):
     query = (f'short-{ticker}-{datetime.now().strftime("%d/%m/%Y:%H")}')
