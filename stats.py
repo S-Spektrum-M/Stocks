@@ -15,6 +15,9 @@ def update_db(query, vals):
     client.set(f'{query}.upper',vals[0])
     client.set(f'{query}.lower',vals[1])
 
+def update_db_bad_id(ticker):
+    client.set(ticker, "bad_id")
+
 @njit()
 def calc_short(y, i):
     x = np.arange(0, i)
@@ -41,49 +44,59 @@ def calc_long(y, i):
         return None
 
 def short(ticker):
-    query = (f'short-{ticker}-{datetime.now().strftime("%d/%m/%Y:%H")}')
-    if client.get(query) != None:
-        print(query)
-        return [
-            float(client.get(f'{query}.upper').decode('utf-8')),
-            float(client.get(f'{query}.lower').decode('utf-8'))
-        ]
-    else:
-        prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
-        if prices[0] == None:
-            return None
+    if client.get(ticker) != 'bad_id':
+        query = (f'short-{ticker}-{datetime.now().strftime("%d/%m/%Y:%H")}')
+        if client.get(query) != None:
+            print(query)
+            return [
+                float(client.get(f'{query}.upper').decode('utf-8')),
+                float(client.get(f'{query}.lower').decode('utf-8'))
+            ]
         else:
-            y_tmp = list()
-            i = 0
-            for price in prices:
-                y_tmp.append(float(price["open_price"]))
-                y_tmp.append(float(price["close_price"]))
-                i = i + 2
+            prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
+            if prices[0] == None:
+                update_db_bad_id(ticker)
+                return None
+            else:
+                y_tmp = list()
+                i = 0
+                for price in prices:
+                    y_tmp.append(float(price["open_price"]))
+                    y_tmp.append(float(price["close_price"]))
+                    i = i + 2
 
-            b = calc_short(np.asarray(y_tmp), i)
-            update_db(query, b)
-            return b
+                b = calc_short(np.asarray(y_tmp), i)
+                update_db(query, b)
+                return b
+    else:
+        return None
 
 def long(ticker):
-    query = (f'long-{ticker}-{datetime.now().strftime("%d/%m/%Y")}')
-    if client.get(query) != None:
-        print(query)
-        return [
-            float(client.get(f'{query}.upper').decode('utf-8')),
-            float(client.get(f'{query}.lower').decode('utf-8'))
-        ]
-    else:
-        prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
-        if prices[0] == None:
-            return None
+    if client.get(ticker) != 'bad_id':
+        query = (f'long-{ticker}-{datetime.now().strftime("%d/%m/%Y")}')
+        if client.get(query) != None:
+            print(query)
+            return [
+                float(client.get(f'{query}.upper').decode('utf-8')),
+                float(client.get(f'{query}.lower').decode('utf-8'))
+            ]
         else:
-            y_tmp = list()
-            i = -1
-            for price in prices:
-                y_tmp.append(float(price["open_price"]))
-                y_tmp.append(float(price["close_price"]))
-                i = i + 2
-            b = calc_long(np.asarray(y_tmp), i)
-            if b != None:
-                update_db(query, b)
-            return b
+            prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
+            if prices[0] == None:
+                update_db_bad_id(ticker)
+                return None
+            else:
+                y_tmp = list()
+                i = -1
+                for price in prices:
+                    y_tmp.append(float(price["open_price"]))
+                    y_tmp.append(float(price["close_price"]))
+                    i = i + 2
+                b = calc_long(np.asarray(y_tmp), i)
+                if b != None:
+                    update_db(query, b)
+                return b
+    else:
+        return None
+
+update_db_bad_id('aapl')
