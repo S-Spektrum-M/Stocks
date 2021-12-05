@@ -31,12 +31,11 @@ def short_multi():
                             "error": "bad_id",
                             "bad_id": param
                         })
-
                 else:
-                    return jsonify({
-                        "error": "too_long",
-                        "length": len(params)
-                    }), 404
+                    ret_list.append({
+                        "error": "bad_id",
+                        "bad_id": param
+                    })
             return jsonify(ret_list), 200
         return jsonify({
             "error": "too long",
@@ -85,7 +84,7 @@ def long_multi():
                         param: response
                     })
             else:
-                return jsonify({
+                ret_list.append({
                     "error": "bad_id",
                     "bad_id": param
                 }), 404
