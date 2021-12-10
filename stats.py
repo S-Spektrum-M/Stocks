@@ -21,11 +21,9 @@ def update_db(query, vals):
     CLIENT.set(f'{query}.upper', vals[0])
     CLIENT.set(f'{query}.lower', vals[1])
 
-
 def update_db_bad_id(ticker):
     CLIENT.set(ticker, "bad_id")
 
-@njit()
 def calc_short(y, i):
     # calc LinearRegression of y
     x = np.arange(i)
@@ -34,11 +32,13 @@ def calc_short(y, i):
     # calculate upper and lower bounds
     upper = reg.predict(x)
     lower = reg.predict(x)
-    upper[0] = upper[0] + (upper[0] * 0.05)
-    lower[0] = lower[0] - (lower[0] * 0.05)
-    return [upper[0], lower[0]]
+    upper[0] *= 1.05
+    lower[0] *= 1.05
+    return [
+            round(upper[0], 2),
+            round(lower[0], 2)
+    ]
 
-@njit()
 def calc_long(y, i):
     if y[0] != 0:
         rate_of_change = (y[i] / y[0])**(1 / float(i))
