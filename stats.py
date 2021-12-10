@@ -8,13 +8,10 @@ from robin_stocks import robinhood as rh
 import auth
 import redis
 from datetime import datetime
-from numba import njit
 from sklearn.linear_model import LinearRegression as lr
 
 rh.authentication.login(auth.USERNAME, auth.PASSWORD)
-
 CLIENT = redis.Redis(host='localhost', port=6379, db=0)
-
 
 def update_db(query, vals):
     CLIENT.set(query, "true")
@@ -30,23 +27,20 @@ def calc_short(y, i):
     x = x.reshape(-1, 1)
     reg = lr().fit(x, y)
     # calculate upper and lower bounds
-    upper = reg.predict(x)
-    lower = reg.predict(x)
-    upper[0] *= 1.05
-    lower[0] *= 1.05
+    pred = reg.predict(x)[0]
     return [
-            round(upper[0], 2),
-            round(lower[0], 2)
+            round(pred * 1.05, 2),
+            round(pred * 0.95, 2)
     ]
 
 def calc_long(y, i):
     if y[0] != 0:
         rate_of_change = (y[i] / y[0])**(1 / float(i))
-        b = [
+        return [
             round(y[i] * rate_of_change + np.std(y), 2),
             round(y[i] * rate_of_change - np.std(y), 2),
         ]
-        return b
+        # np.polyfit(np.arange(i), y, 1)
     else:
         return None
 
