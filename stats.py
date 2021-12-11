@@ -9,12 +9,12 @@ short
 long
 curr
 """
+from datetime import datetime
 import numpy as np
 from robin_stocks import robinhood as rh
-import auth
-import redis
-from datetime import datetime
 from sklearn.linear_model import LinearRegression as lr
+import redis
+import auth
 
 rh.authentication.login(auth.USERNAME, auth.PASSWORD)
 CLIENT = redis.Redis(host='localhost', port=6379, db=0)
@@ -36,28 +36,28 @@ def update_db_bad_id(ticker):
     CLIENT.set(ticker, "bad_id")
 
 
-def calc_short(y, i):
+def calc_short(historicals, i):
     """
     Use linear regression to calculate the upper and lower bounds
     """
-    # calc LinearRegression of y
-    x = np.arange(i)
-    x = x.reshape(-1, 1)
-    reg = lr().fit(x, y)
+    # calc LinearRegression of historicals
+    features = np.arange(i)
+    features = features.reshape(-1, 1)
+    reg = lr().fit(features, historicals)
     # calculate upper and lower bounds
-    pred = reg.predict(x)[0]
+    pred = reg.predict(features)[0]
     return [round(pred * 1.05, 2), round(pred * 0.95, 2)]
 
 
-def calc_long(y, i):
+def calc_long(historicals, i):
     """
     Use exponential curve fitting to calculate the upper and lower bounds
     """
-    if y[0] != 0:
-        rate_of_change = (y[i] / y[0])**(1 / float(i))
+    if historicals[0] != 0:
+        rate_of_change = (historicals[i] / historicals[0])**(1 / float(i))
         return [
-            round(y[i] * rate_of_change * 1.05, 2),
-            round(y[i] * rate_of_change * 0.95, 2)
+            round(historicals[i] * rate_of_change * 1.05, 2),
+            round(historicals[i] * rate_of_change * 0.95, 2)
         ]
     return None
 
@@ -68,30 +68,27 @@ def short(ticker):
     """
     if CLIENT.get(ticker) != 'bad_id':
         query = (f'short-{ticker}-{datetime.now().strftime("%d/%m/%Y:%H")}')
-        if CLIENT.get(query) != None:
+        if CLIENT.get(query) is not None:
             print(query)
             return [
                 float(CLIENT.get(f'{query}.upper').decode('utf-8')),
                 float(CLIENT.get(f'{query}.lower').decode('utf-8'))
             ]
-        else:
-            prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
-            if prices[0] == None:
-                update_db_bad_id(ticker)
-                return None
-            else:
-                y_tmp = list()
-                i = 0
-                for price in prices:
-                    y_tmp.append(float(price["open_price"]))
-                    y_tmp.append(float(price["close_price"]))
-                    i = i + 2
+        prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
+        if prices[0] is None:
+            update_db_bad_id(ticker)
+            return None
+        y_tmp = list()
+        i = 0
+        for price in prices:
+            y_tmp.append(float(price["open_price"]))
+            y_tmp.append(float(price["close_price"]))
+            i = i + 2
 
-                b = calc_short(np.asarray(y_tmp), i)
-                update_db(query, b)
-                return b
-    else:
-        return None
+        ret_arr = calc_short(np.asarray(y_tmp), i)
+        update_db(query, ret_arr)
+        return ret_arr
+    return None
 
 
 def long(ticker):
@@ -100,30 +97,27 @@ def long(ticker):
     """
     if CLIENT.get(ticker) != 'bad_id':
         query = (f'long-{ticker}-{datetime.now().strftime("%d/%m/%Y")}')
-        if CLIENT.get(query) != None:
+        if CLIENT.get(query) is not None:
             print(query)
             return [
                 float(CLIENT.get(f'{query}.upper').decode('utf-8')),
                 float(CLIENT.get(f'{query}.lower').decode('utf-8'))
             ]
-        else:
-            prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
-            if prices[0] == None:
-                update_db_bad_id(ticker)
-                return None
-            else:
-                y_tmp = list()
-                i = -1
-                for price in prices:
-                    y_tmp.append(float(price["open_price"]))
-                    y_tmp.append(float(price["close_price"]))
-                    i = i + 2
-                b = calc_long(np.asarray(y_tmp), i)
-                if b != None:
-                    update_db(query, b)
-                return b
-    else:
-        return None
+        prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
+        if prices[0] is None:
+            update_db_bad_id(ticker)
+            return None
+        y_tmp = list()
+        i = -1
+        for price in prices:
+            y_tmp.append(float(price["open_price"]))
+            y_tmp.append(float(price["close_price"]))
+            i = i + 2
+        ret_arr = calc_long(np.asarray(y_tmp), i)
+        if ret_arr is not None:
+            update_db(query, ret_arr)
+        return ret_arr
+    return None
 
 
 def current(ticker):
