@@ -45,7 +45,7 @@ def short_multi():
         "error": "no_param"
     }), 404
 
-@APP.route('/api/short/', methods=['GET'])
+@APP.route('/api/short', methods=['GET'])
 def short():
     """Return JSON representing return"""
     if 'id' in request.args:
@@ -94,7 +94,7 @@ def long_multi():
             "error": "no_id"
         }), 404
 
-@APP.route('/api/long/', methods=['GET'])
+@APP.route('/api/long', methods=['GET'])
 def long():
     """Return JSON representing return"""
     if 'id' in request.args:
@@ -118,5 +118,26 @@ def long():
         return jsonify({
             "error": "no_id"
         }), 400
+
+@APP.route('/api/current')
+def current():
+    """Return JSON representing return"""
+    if 'id' in request.args:
+        ticker = str(request.args['id'])
+        if ticker.isalpha():
+            respone = st.current(ticker)
+            if respone is not None:
+                return jsonify({
+                    'current_price':  respone
+                })
+            return jsonify({
+                "error": "bad_id"
+            }), 404
+        return jsonify({
+            "error": "bad_id"
+        }), 404
+    return jsonify({
+        "error": "no_id"
+    }), 400
 
 APP.run(host="localhost", port=8080, debug=True)
