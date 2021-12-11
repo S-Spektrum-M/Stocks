@@ -19,36 +19,53 @@ from sklearn.linear_model import LinearRegression as lr
 rh.authentication.login(auth.USERNAME, auth.PASSWORD)
 CLIENT = redis.Redis(host='localhost', port=6379, db=0)
 
+
 def update_db(query, vals):
+    """
+    Update the redis database with the latest predictions
+    """
     CLIENT.set(query, "true")
     CLIENT.set(f'{query}.upper', vals[0])
     CLIENT.set(f'{query}.lower', vals[1])
 
+
 def update_db_bad_id(ticker):
+    """
+    Update the redis database with the error
+    """
     CLIENT.set(ticker, "bad_id")
 
+
 def calc_short(y, i):
+    """
+    Use linear regression to calculate the upper and lower bounds
+    """
     # calc LinearRegression of y
     x = np.arange(i)
     x = x.reshape(-1, 1)
     reg = lr().fit(x, y)
     # calculate upper and lower bounds
     pred = reg.predict(x)[0]
-    return [
-            round(pred * 1.05, 2),
-            round(pred * 0.95, 2)
-    ]
+    return [round(pred * 1.05, 2), round(pred * 0.95, 2)]
+
 
 def calc_long(y, i):
+    """
+    Use exponential curve fitting to calculate the upper and lower bounds
+    """
     if y[0] != 0:
         rate_of_change = (y[i] / y[0])**(1 / float(i))
         return [
-            round(y[i] * rate_of_change + np.std(y), 2),
-            round(y[i] * rate_of_change - np.std(y), 2),
+            round(y[i] * rate_of_change * 1.05, 2),
+            round(y[i] * rate_of_change * 0.95, 2)
         ]
     return None
 
+
 def short(ticker):
+    """
+    Return the short term upper and lower bounds for a stock
+    """
     if CLIENT.get(ticker) != 'bad_id':
         query = (f'short-{ticker}-{datetime.now().strftime("%d/%m/%Y:%H")}')
         if CLIENT.get(query) != None:
@@ -76,7 +93,11 @@ def short(ticker):
     else:
         return None
 
+
 def long(ticker):
+    """
+    Return the long term upper and lower bounds for a stock
+    """
     if CLIENT.get(ticker) != 'bad_id':
         query = (f'long-{ticker}-{datetime.now().strftime("%d/%m/%Y")}')
         if CLIENT.get(query) != None:
@@ -104,5 +125,9 @@ def long(ticker):
     else:
         return None
 
+
 def current(ticker):
+    """
+    Return the current price for a stock
+    """
     return rh.get_latest_price(ticker)[0]
