@@ -3,9 +3,9 @@ A Share Trading API built on flask
 Check out the github README for docs
 https://github.com/S-Spektrum-M/Stocks
 """
-import stats as st
 import flask
 from flask import request, jsonify
+import stats as st
 
 APP = flask.Flask(__name__)
 # app.config["DEBUG"] = True
@@ -47,10 +47,8 @@ def short():
                     'lower': response[1]
                 }), 200
             return jsonify({"error": "bad_id"}), 404
-        return jsonify({"error": "no_id"}), 400
-
-    else:
-        return jsonify({"error": "no_id"}), 400
+        return jsonify({"error": "bad_id"}), 404
+    return jsonify({"error": "no_id"}), 400
 
 
 @APP.route('/api/long/multi', methods=['GET'])
@@ -63,33 +61,29 @@ def long_multi():
         for param in params_list:
             if param.isalpha():
                 response = st.long(param.upper())
-                if response != None:
+                if response is not None:
                     ret_list.append({param: response})
             else:
-                ret_list.append({"error": "bad_id", "bad_id": param}), 404
+                ret_list.append({"error": "bad_id", "bad_id": param})
         return jsonify(ret_list), 200
-    else:
-        return jsonify({"error": "no_id"}), 404
+    return jsonify({"error": "no_id"}), 404
 
 
 @APP.route('/api/long', methods=['GET'])
 def long():
     """Return JSON representing return"""
     if 'id' in request.args:
-        id = str(request.args['id'])
-        if id.isalpha():
-            response = st.long(id.upper())
-            if response != None:
+        ticker = str(request.args['id'])
+        if ticker.isalpha():
+            response = st.long(ticker.upper())
+            if response is not None:
                 return jsonify({
                     'upper': response[0],
                     'lower': response[1]
                 }), 200
-            else:
-                return jsonify({"error": "bad_id"}), 404
-        else:
-            return jsonify({"error": "no_id"}), 400
-    else:
-        return jsonify({"error": "no_id"}), 400
+            return jsonify({"error": "bad_id"}), 404
+        return jsonify({"error": "bad_id"}), 404
+    return jsonify({"error": "no_id"}), 400
 
 
 @APP.route('/api/current')
