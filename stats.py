@@ -2,6 +2,12 @@
 Statistical Calculations for stock predictions
 methods:
 update_db
+update_db_bad_id
+calc_short
+calc_long
+short
+long
+curr
 """
 import numpy as np
 from robin_stocks import robinhood as rh
@@ -40,9 +46,7 @@ def calc_long(y, i):
             round(y[i] * rate_of_change + np.std(y), 2),
             round(y[i] * rate_of_change - np.std(y), 2),
         ]
-        # np.polyfit(np.arange(i), y, 1)
-    else:
-        return None
+    return None
 
 def short(ticker):
     if CLIENT.get(ticker) != 'bad_id':
@@ -100,5 +104,5 @@ def long(ticker):
     else:
         return None
 
-def curr(ticker):
+def current(ticker):
     return rh.get_latest_price(ticker)[0]
