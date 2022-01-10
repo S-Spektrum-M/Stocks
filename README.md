@@ -17,7 +17,7 @@ Install S.T.O.C.K.S
     pip install redis
 ```
 
-- Add your robinhood email and password to `auth.py`
+- Add your Robinhood email and password to auth.py.
 
 ## How it works
 
@@ -26,7 +26,7 @@ Install S.T.O.C.K.S
     - Next trading hour
   - Long term: Exponential
     - Next trading day
-- If the query has already been served within the last minute then it is loaded from a redis db to increase
+- If the query has already served itself within the last minute, then it is loaded from a Redis database to increase
   speed and decrease compute time
 - The query is then served through Flask
 
@@ -110,17 +110,6 @@ Return Type
     ]
   }
 ]
-```
-
-### Long-multi
-
-| Endpoint          | Parameter          | Description                                   |
-| ----------------- | ------------------ | --------------------------------------------- |
-| `/api/long/multi` | `?params={ticker}` | The long term calculation for multiple stocks |
-
-Return Type
-
-```json
 ```
 
 ## Acknowledgements
