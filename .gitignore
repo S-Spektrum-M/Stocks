@@ -134,3 +134,4 @@ dump.rdb
 # Project Files
 auth.py
 stocks.json
+creds.json
