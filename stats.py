@@ -1,14 +1,15 @@
 """
 Statistical Calculations for stock predictions
 methods:
-update_db
-update_db_bad_id
+_update_db
+_update_db_bad_id
 calc_short
 calc_long
 short
 long
 curr
 """
+
 from datetime import datetime
 import numpy as np
 from robin_stocks import robinhood as rh
@@ -16,11 +17,11 @@ from sklearn.linear_model import LinearRegression as lr
 import redis
 import auth
 
-rh.authentication.login(auth.USERNAME, auth.PASSWORD)
+rh.authentication.login(auth.get_username, auth.get_password)
 CLIENT = redis.Redis(host='localhost', port=6379, db=0)
 
 
-def update_db(query, vals):
+def _update_db(query, vals):
     """
     Update the redis database with the latest predictions
     """
@@ -29,7 +30,7 @@ def update_db(query, vals):
     CLIENT.set(f'{query}.lower', vals[1])
 
 
-def update_db_bad_id(ticker):
+def _update_db_bad_id(ticker):
     """
     Update the redis database with the error
     """
@@ -76,7 +77,7 @@ def short(ticker):
             ]
         prices = rh.stocks.get_stock_historicals(ticker, 'hour', 'month')
         if prices[0] is None:
-            update_db_bad_id(ticker)
+            _update_db_bad_id(ticker)
             return None
         y_tmp = list()
         i = 0
@@ -86,7 +87,7 @@ def short(ticker):
             i = i + 2
 
         ret_arr = calc_short(np.asarray(y_tmp), i)
-        update_db(query, ret_arr)
+        _update_db(query, ret_arr)
         return ret_arr
     return None
 
@@ -105,7 +106,7 @@ def long(ticker):
             ]
         prices = rh.stocks.get_stock_historicals(ticker, 'day', '5year')
         if prices[0] is None:
-            update_db_bad_id(ticker)
+            _update_db_bad_id(ticker)
             return None
         y_tmp = list()
         i = -1
@@ -115,7 +116,7 @@ def long(ticker):
             i = i + 2
         ret_arr = calc_long(np.asarray(y_tmp), i)
         if ret_arr is not None:
-            update_db(query, ret_arr)
+            _update_db(query, ret_arr)
         return ret_arr
     return None
 
