@@ -17,7 +17,7 @@ from sklearn.linear_model import LinearRegression as lr
 import redis
 import auth
 
-rh.authentication.login(auth.get_username, auth.get_password)
+rh.authentication.login(auth.get_username(), auth.get_password())
 CLIENT = redis.Redis(host='localhost', port=6379, db=0)
 
 
