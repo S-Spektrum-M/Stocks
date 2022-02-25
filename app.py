@@ -8,7 +8,6 @@ from flask import request, jsonify
 import stats as st
 
 APP = flask.Flask(__name__)
-# app.config["DEBUG"] = True
 
 
 @APP.route('/api/short/multi', methods=['GET'])
