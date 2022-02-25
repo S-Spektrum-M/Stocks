@@ -1,5 +1,5 @@
 """
-A Share Tracing API built on flask
+A Share Tracking API built on flask
 Check out the github README for docs
 https://github.com/S-Spektrum-M/Stocks
 """
